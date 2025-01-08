@@ -3,8 +3,7 @@
 
 ## Data Scientist/Engineer and Software developer
 
-🔭 Currently studying my Masters in Big data and Business Analytics at IE School of Science and Technology in Madrid, Spain.
-
+🔭 Currently working as a Junior Data Scientist II at Aily Labs in Madrid, Spain, developing AI-powered solutions with a focus on NLP and Machine Learning. Recently completed my Master's in Business Analytics and Big Data from IE School of Science and Technology.
 
 🌎 Check out my [portfolio](https://www.felipebasurto.com/)
 
