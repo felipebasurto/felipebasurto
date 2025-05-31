@@ -16,7 +16,7 @@ Feel free to reach out 💬
 
 
 <div align="center" style="background:#414a50; padding: 25px 0;">
-    <a href="https://twitter.com/BasurtoBarrio">
+    <a href="https://twitter.com/fildotai">
         <img src="https://raw.githubusercontent.com/Iwi4a/iwi4a/master/assets/twitter.svg" alt="Follow me on twitter">
     </a>
      <a href="https://www.linkedin.com/in/felipe-basurto-barrio/">
