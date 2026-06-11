@@ -1,3 +1,5 @@
+<img src="assets/header.gif" width="100%" alt="" />
+
 `~/github.md` · Madrid
 
 # Felipe Basurto

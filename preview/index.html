@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>header gallery · felipebasurto</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --panel: #0d0d10;
+    --text: #e4e4e7;
+    --muted: #71717a;
+    --accent: #9bb4ff;
+    --red: #e88a8a;
+    --hairline: rgba(255, 255, 255, 0.08);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 48px 24px 96px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 1280px; margin: 0 auto; }
+  h1 { font-size: 20px; font-weight: 600; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 40px; }
+  .sub code { color: var(--accent); }
+  section {
+    margin-bottom: 40px;
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--panel);
+  }
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .num { color: var(--muted); }
+  .name { font-weight: 600; }
+  .desc { color: var(--muted); font-size: 12px; flex: 1; }
+  canvas { display: block; width: 100%; height: auto; background: var(--bg); }
+  button, input {
+    font: inherit;
+    font-size: 12px;
+    background: #16161a;
+    color: var(--text);
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    padding: 4px 10px;
+  }
+  button { cursor: pointer; }
+  button:hover { border-color: var(--accent); color: var(--accent); }
+  button.rec { border-color: var(--red); color: var(--red); }
+  input { width: 96px; }
+  footer { color: var(--muted); font-size: 12px; margin-top: 24px; }
+  footer code { color: var(--text); background: #16161a; padding: 1px 6px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1># header gallery</h1>
+  <div class="sub">
+    5 candidatos · 1280×280 · loop perfecto de 6s · paleta <code>felipebasurto.com</code> —
+    elige uno, ajusta el seed si quieres, y dale a <code>export</code>
+  </div>
+  <div id="gallery"></div>
+  <footer>
+    El export descarga un <code>.webm</code> de exactamente un loop.
+    Conversión a GIF (la hace el agente): <code>ffmpeg -i in.webm -vf "fps=24,split[a][b];[a]palettegen[p];[b][p]paletteuse" header.gif</code>
+  </footer>
+</div>
+
+<script>
+"use strict";
+
+const W = 1280, H = 280, LOOP = 6, TAU = Math.PI * 2;
+
+const PAL = {
+  bg: "#0a0a0c",
+  accent: "#9bb4ff",
+  amber: "#d4a574",
+  red: "#e88a8a",
+  cyan: "#7fb8c4",
+  green: "#a3c293",
+  text: "#e4e4e7",
+  muted: "#71717a",
+};
+
+/* ---------- helpers ---------- */
+
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function hex2rgb(h) {
+  return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+}
+function rgba(hex, a) {
+  const [r, g, b] = hex2rgb(hex);
+  return `rgba(${r},${g},${b},${a})`;
+}
+function mixHex(h1, h2, k) {
+  const a = hex2rgb(h1), b = hex2rgb(h2);
+  const c = a.map((v, i) => Math.round(v + (b[i] - v) * k));
+  return `rgb(${c[0]},${c[1]},${c[2]})`;
+}
+function smoothstep(e0, e1, x) {
+  const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0)));
+  return t * t * (3 - 2 * t);
+}
+
+/* Campo de ondas planas con frecuencias temporales enteras → loop perfecto. */
+function makeField(rng, scale, speedMax = 2) {
+  const waves = [];
+  for (let i = 0; i < 3; i++) {
+    waves.push({
+      fx: (rng() * 2 - 1) * scale,
+      fy: (rng() * 2 - 1) * scale,
+      k: 1 + Math.floor(rng() * speedMax),
+      ph: rng() * TAU,
+    });
+  }
+  return (x, y, t) => {
+    let v = 0;
+    for (const w of waves) v += Math.sin(x * w.fx + y * w.fy + TAU * w.k * t + w.ph);
+    return v / 3; // [-1, 1]
+  };
+}
+
+/* ---------- renderers ---------- */
+
+const GLYPH_CHARS = "01·:+×▲△○●◇/\\|<>{}[]$#@%&*=~";
+
+const renderers = [
+  {
+    id: "glyphs",
+    name: "Glyph field",
+    desc: "malla de símbolos que pulsa — vibe AI/datos",
+    init(seed) {
+      const rng = mulberry32(seed);
+      const cellW = 16, cellH = 19;
+      const cols = Math.ceil(W / cellW), rows = Math.ceil(H / cellH);
+      const base = [];
+      for (let i = 0; i < cols * rows; i++) base.push(Math.floor(rng() * GLYPH_CHARS.length));
+      return {
+        cellW, cellH, cols, rows, base,
+        field: makeField(rng, 0.012),
+        hueField: makeField(rng, 0.006, 1),
+      };
+    },
+    draw(ctx, t, s) {
+      ctx.fillStyle = PAL.bg;
+      ctx.fillRect(0, 0, W, H);
+      ctx.font = "13px ui-monospace, Menlo, monospace";
+      ctx.textBaseline = "middle";
+      ctx.textAlign = "center";
+      for (let r = 0; r < s.rows; r++) {
+        for (let c = 0; c < s.cols; c++) {
+          const x = c * s.cellW + s.cellW / 2;
+          const y = r * s.cellH + s.cellH / 2;
+          const v = 0.5 + 0.5 * s.field(x, y, t);
+          const a = smoothstep(0.45, 0.97, v);
+          if (a < 0.05) continue;
+          const hue = 0.5 + 0.5 * s.hueField(x, y, t);
+          let col;
+          if (v > 0.93) col = PAL.amber;
+          else col = mixHex(PAL.cyan, PAL.accent, hue);
+          ctx.fillStyle = col;
+          ctx.globalAlpha = a * 0.92;
+          const shift = Math.floor(4 * v);
+          const ch = GLYPH_CHARS[(s.base[r * s.cols + c] + shift) % GLYPH_CHARS.length];
+          ctx.fillText(ch, x, y);
+        }
+      }
+      ctx.globalAlpha = 1;
+      const vg = ctx.createRadialGradient(W / 2, H / 2, H * 0.4, W / 2, H / 2, W * 0.62);
+      vg.addColorStop(0, "rgba(10,10,12,0)");
+      vg.addColorStop(1, "rgba(10,10,12,0.75)");
+      ctx.fillStyle = vg;
+      ctx.fillRect(0, 0, W, H);
+    },
+  },
+
+  {
+    id: "aura",
+    name: "Aura bloom",
+    desc: "gradientes orgánicos que respiran — premium, minimal",
+    init(seed) {
+      const rng = mulberry32(seed);
+      const colors = [PAL.accent, PAL.cyan, PAL.amber, PAL.accent, PAL.green, PAL.red, PAL.accent];
+      const blobs = [];
+      for (let i = 0; i < 7; i++) {
+        blobs.push({
+          cx: W * (0.08 + 0.84 * rng()),
+          cy: H * (0.2 + 0.6 * rng()),
+          rx: 60 + rng() * 160,
+          ry: 30 + rng() * 70,
+          kx: 1 + Math.floor(rng() * 2),
+          ky: 1 + Math.floor(rng() * 2),
+          phx: rng() * TAU,
+          phy: rng() * TAU,
+          size: 130 + rng() * 150,
+          pk: 1 + Math.floor(rng() * 2),
+          pph: rng() * TAU,
+          color: colors[i % colors.length],
+          alpha: 0.16 + rng() * 0.14,
+        });
+      }
+      return { blobs };
+    },
+    draw(ctx, t, s) {
+      ctx.fillStyle = PAL.bg;
+      ctx.fillRect(0, 0, W, H);
+      ctx.globalCompositeOperation = "lighter";
+      for (const b of s.blobs) {
+        const x = b.cx + b.rx * Math.cos(TAU * b.kx * t + b.phx);
+        const y = b.cy + b.ry * Math.sin(TAU * b.ky * t + b.phy);
+        const size = b.size * (1 + 0.22 * Math.sin(TAU * b.pk * t + b.pph));
+        const g = ctx.createRadialGradient(x, y, 0, x, y, size);
+        g.addColorStop(0, rgba(b.color, b.alpha));
+        g.addColorStop(1, rgba(b.color, 0));
+        ctx.fillStyle = g;
+        ctx.fillRect(x - size, y - size, size * 2, size * 2);
+      }
+      ctx.globalCompositeOperation = "source-over";
+      const vg = ctx.createRadialGradient(W / 2, H / 2, H * 0.3, W / 2, H / 2, W * 0.58);
+      vg.addColorStop(0, "rgba(10,10,12,0)");
+      vg.addColorStop(1, "rgba(10,10,12,0.6)");
+      ctx.fillStyle = vg;
+      ctx.fillRect(0, 0, W, H);
+    },
+  },
+
+  {
+    id: "silk",
+    name: "Liquid silk",
+    desc: "ondas de seda fluyendo — vibe música / Triple Check",
+    init(seed) {
+      const rng = mulberry32(seed);
+      const colors = [PAL.accent, PAL.cyan, PAL.amber, PAL.red, PAL.green];
+      const ribbons = [];
+      const n = 7;
+      for (let i = 0; i < n; i++) {
+        ribbons.push({
+          baseY: 30 + (H - 70) * (i / (n - 1)) + (rng() * 24 - 12),
+          thick: 30 + rng() * 44,
+          a1: 14 + rng() * 26,
+          f1: 0.004 + rng() * 0.004,
+          k1: 1 + Math.floor(rng() * 2),
+          p1: rng() * TAU,
+          a2: 8 + rng() * 16,
+          f2: 0.008 + rng() * 0.006,
+          k2: 1 + Math.floor(rng() * 2),
+          p2: rng() * TAU,
+          color: colors[Math.floor(rng() * colors.length)],
+          depth: i / (n - 1),
+        });
+      }
+      return { ribbons };
+    },
+    draw(ctx, t, s) {
+      ctx.fillStyle = PAL.bg;
+      ctx.fillRect(0, 0, W, H);
+      for (const rb of s.ribbons) {
+        const edge = (x) =>
+          rb.baseY +
+          rb.a1 * Math.sin(x * rb.f1 + TAU * rb.k1 * t + rb.p1) +
+          rb.a2 * Math.sin(x * rb.f2 - TAU * rb.k2 * t + rb.p2);
+        ctx.beginPath();
+        ctx.moveTo(-10, edge(-10));
+        for (let x = 0; x <= W + 16; x += 16) ctx.lineTo(x, edge(x));
+        for (let x = W + 16; x >= -10; x -= 16) ctx.lineTo(x, edge(x) + rb.thick);
+        ctx.closePath();
+        const lg = ctx.createLinearGradient(0, rb.baseY - rb.a1 - rb.a2, 0, rb.baseY + rb.thick);
+        lg.addColorStop(0, mixHex(rb.color, "#ffffff", 0.12));
+        lg.addColorStop(0.5, mixHex(rb.color, PAL.bg, 0.45 + rb.depth * 0.25));
+        lg.addColorStop(1, rgba(PAL.bg, 0.9));
+        ctx.fillStyle = lg;
+        ctx.globalAlpha = 0.82;
+        ctx.fill();
+        // highlight en el borde superior
+        ctx.beginPath();
+        ctx.moveTo(-10, edge(-10));
+        for (let x = 0; x <= W + 16; x += 16) ctx.lineTo(x, edge(x));
+        ctx.strokeStyle = rgba(rb.color, 0.55);
+        ctx.lineWidth = 1.4;
+        ctx.globalAlpha = 0.9;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+      const vg = ctx.createLinearGradient(0, 0, 0, H);
+      vg.addColorStop(0, "rgba(10,10,12,0.35)");
+      vg.addColorStop(0.5, "rgba(10,10,12,0)");
+      vg.addColorStop(1, "rgba(10,10,12,0.45)");
+      ctx.fillStyle = vg;
+      ctx.fillRect(0, 0, W, H);
+    },
+  },
+
+  {
+    id: "terminal",
+    name: "Terminal",
+    desc: "~/github.md tecleándose con scanlines — encaja 1:1 con el README",
+    init(seed) {
+      const rng = mulberry32(seed);
+      const lines = [
+        { text: "$ cat ~/github.md", color: PAL.green, promptLen: 1 },
+        { text: "", color: PAL.text },
+        { text: "# Felipe Basurto", color: PAL.amber },
+        { text: "", color: PAL.text },
+        { text: "apps:      Encore · HabitDex · Audio Silence Remover", color: PAL.text, keyLen: 10, keyColor: PAL.cyan },
+        { text: "music:     Triple Check", color: PAL.text, keyLen: 10, keyColor: PAL.cyan },
+        { text: "community: Cursor meetups & hackathons", color: PAL.text, keyLen: 10, keyColor: PAL.cyan },
+        { text: "", color: PAL.text },
+        { text: "$", color: PAL.green },
+      ];
+      const total = lines.reduce((s, l) => s + Math.max(1, l.text.length), 0);
+      // grano estático por seed
+      const grains = [];
+      for (let i = 0; i < 420; i++) grains.push([rng() * W, rng() * H, rng() * 0.05]);
+      return { lines, total, grains };
+    },
+    draw(ctx, t, s) {
+      ctx.fillStyle = PAL.bg;
+      ctx.fillRect(0, 0, W, H);
+      const tint = ctx.createRadialGradient(W / 2, -H * 0.3, 0, W / 2, -H * 0.3, W * 0.7);
+      tint.addColorStop(0, "rgba(15,23,42,0.5)");
+      tint.addColorStop(1, "rgba(15,23,42,0)");
+      ctx.fillStyle = tint;
+      ctx.fillRect(0, 0, W, H);
+
+      // envolvente: fade-in 0–2% · typing 2–72% · hold · fade-out 92–100%
+      const env = smoothstep(0, 0.02, t) * (1 - smoothstep(0.92, 1, t));
+      const typeT = smoothstep(0.02, 0.72, t);
+      const reveal = Math.floor(typeT * s.total);
+
+      ctx.font = "15px ui-monospace, Menlo, monospace";
+      ctx.textBaseline = "top";
+      const x0 = 56, y0 = 42, lh = 22;
+      let used = 0, cx = x0, cy = y0;
+      ctx.globalAlpha = env;
+      for (const line of s.lines) {
+        const n = Math.max(1, line.text.length);
+        const show = Math.min(line.text.length, Math.max(0, reveal - used));
+        if (show > 0) {
+          const head = line.keyLen ? Math.min(show, line.keyLen) : (line.promptLen ? Math.min(show, line.promptLen) : 0);
+          const headColor = line.keyColor || (line.promptLen ? PAL.green : line.color);
+          if (head > 0) {
+            ctx.fillStyle = headColor;
+            ctx.fillText(line.text.slice(0, head), cx, cy);
+          }
+          if (show > head) {
+            ctx.fillStyle = line.promptLen ? PAL.text : line.color;
+            const headW = ctx.measureText(line.text.slice(0, head)).width;
+            ctx.fillText(line.text.slice(head, show), cx + headW, cy);
+          }
+        }
+        used += n;
+        if (reveal < used) {
+          // cursor en esta línea
+          const cw = ctx.measureText(line.text.slice(0, Math.max(0, show))).width;
+          const blink = Math.sin(TAU * 6 * t) > -0.2 ? 1 : 0;
+          ctx.fillStyle = rgba(PAL.accent, 0.9 * blink);
+          ctx.fillRect(cx + cw + 2, cy, 9, 17);
+          break;
+        }
+        cy += lh;
+      }
+      // cursor final cuando todo está escrito
+      if (reveal >= s.total) {
+        const last = s.lines[s.lines.length - 1];
+        const cw = ctx.measureText(last.text).width;
+        const blink = Math.sin(TAU * 6 * t) > -0.2 ? 1 : 0;
+        ctx.fillStyle = rgba(PAL.accent, 0.9 * blink);
+        ctx.fillRect(x0 + cw + 6, y0 + (s.lines.length - 1) * lh, 9, 17);
+      }
+      ctx.globalAlpha = 1;
+
+      // scanlines estáticas
+      ctx.fillStyle = "rgba(0,0,0,0.16)";
+      for (let y = 0; y < H; y += 3) ctx.fillRect(0, y, W, 1);
+      // banda de brillo que recorre (k=1 → loop)
+      const by = ((t % 1) * (H + 160)) - 80;
+      const bg2 = ctx.createLinearGradient(0, by - 60, 0, by + 60);
+      bg2.addColorStop(0, "rgba(155,180,255,0)");
+      bg2.addColorStop(0.5, "rgba(155,180,255,0.045)");
+      bg2.addColorStop(1, "rgba(155,180,255,0)");
+      ctx.fillStyle = bg2;
+      ctx.fillRect(0, by - 60, W, 120);
+      // grano estático
+      ctx.fillStyle = "rgba(255,255,255,1)";
+      for (const [gx, gy, ga] of s.grains) {
+        ctx.globalAlpha = ga;
+        ctx.fillRect(gx, gy, 1, 1);
+      }
+      ctx.globalAlpha = 1;
+    },
+  },
+
+  {
+    id: "mosaic",
+    name: "Pixel mosaic",
+    desc: "mosaico que muta lentamente — indie dev / HabitDex",
+    init(seed) {
+      const rng = mulberry32(seed);
+      return {
+        cell: 20,
+        gap: 3,
+        field: makeField(rng, 0.011, 1),
+        colorField: makeField(rng, 0.005, 1),
+        sparkField: makeField(rng, 0.02, 2),
+      };
+    },
+    draw(ctx, t, s) {
+      ctx.fillStyle = PAL.bg;
+      ctx.fillRect(0, 0, W, H);
+      const cols = Math.ceil(W / s.cell), rows = Math.ceil(H / s.cell);
+      const palette = [PAL.accent, PAL.cyan, PAL.green, PAL.amber, PAL.red];
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const x = c * s.cell, y = r * s.cell;
+          const px = x + s.cell / 2, py = y + s.cell / 2;
+          const v = 0.5 + 0.5 * s.field(px, py, t);
+          const w = 0.5 + 0.5 * s.colorField(px, py, t);
+          const spark = s.sparkField(px, py, t);
+          let col, alpha;
+          if (spark > 0.88) {
+            col = PAL.accent;
+            alpha = 0.95;
+          } else if (v > 0.62) {
+            col = palette[Math.floor(w * palette.length) % palette.length];
+            alpha = 0.25 + 0.65 * smoothstep(0.62, 0.95, v);
+          } else {
+            col = "#15151a";
+            alpha = 0.9;
+          }
+          ctx.fillStyle = col;
+          ctx.globalAlpha = alpha;
+          const sz = s.cell - s.gap;
+          ctx.beginPath();
+          ctx.roundRect(x + s.gap / 2, y + s.gap / 2, sz, sz, 4);
+          ctx.fill();
+        }
+      }
+      ctx.globalAlpha = 1;
+      const vg = ctx.createRadialGradient(W / 2, H / 2, H * 0.4, W / 2, H / 2, W * 0.62);
+      vg.addColorStop(0, "rgba(10,10,12,0)");
+      vg.addColorStop(1, "rgba(10,10,12,0.6)");
+      ctx.fillStyle = vg;
+      ctx.fillRect(0, 0, W, H);
+    },
+  },
+];
+
+/* ---------- gallery + export ---------- */
+
+const gallery = document.getElementById("gallery");
+
+renderers.forEach((rdr, i) => {
+  const sec = document.createElement("section");
+  const seed0 = 1000 + i * 111;
+  sec.innerHTML = `
+    <div class="head">
+      <span class="num">${i + 1}/</span>
+      <span class="name">${rdr.name}</span>
+      <span class="desc">${rdr.desc}</span>
+      <input type="number" value="${seed0}" title="seed" />
+      <button data-act="dice" title="seed aleatorio">🎲</button>
+      <button data-act="pause">⏸</button>
+      <button data-act="export">export ⬇</button>
+    </div>
+  `;
+  const canvas = document.createElement("canvas");
+  canvas.width = W;
+  canvas.height = H;
+  sec.appendChild(canvas);
+  gallery.appendChild(sec);
+
+  const ctx = canvas.getContext("2d");
+  const tile = {
+    id: rdr.id,
+    canvas, ctx,
+    seed: seed0,
+    state: rdr.init(seed0),
+    time: 0, last: performance.now(), t: 0,
+    paused: false,
+  };
+
+  const input = sec.querySelector("input");
+  const btnPause = sec.querySelector('[data-act="pause"]');
+  const btnExport = sec.querySelector('[data-act="export"]');
+
+  input.addEventListener("change", () => {
+    tile.seed = parseInt(input.value, 10) || 0;
+    tile.state = rdr.init(tile.seed);
+  });
+  sec.querySelector('[data-act="dice"]').addEventListener("click", () => {
+    tile.seed = Math.floor(Math.random() * 99999);
+    input.value = tile.seed;
+    tile.state = rdr.init(tile.seed);
+  });
+  btnPause.addEventListener("click", () => {
+    tile.paused = !tile.paused;
+    btnPause.textContent = tile.paused ? "▶" : "⏸";
+  });
+  btnExport.addEventListener("click", () => exportTile(tile, btnExport));
+
+  (function frame(now) {
+    if (!tile.paused) tile.time += (now - tile.last) / 1000;
+    tile.last = now;
+    tile.t = (tile.time / LOOP) % 1;
+    rdr.draw(ctx, tile.t, tile.state);
+    requestAnimationFrame(frame);
+  })(performance.now());
+});
+
+function waitWrap(tile) {
+  return new Promise((res) => {
+    let prev = tile.t;
+    (function chk() {
+      if (tile.t < prev) return res();
+      prev = tile.t;
+      requestAnimationFrame(chk);
+    })();
+  });
+}
+
+async function exportTile(tile, btn) {
+  if (btn.disabled) return;
+  btn.disabled = true;
+  if (tile.paused) {
+    tile.paused = false;
+  }
+  btn.textContent = "esperando loop…";
+  btn.classList.add("rec");
+
+  const stream = tile.canvas.captureStream(30);
+  const mime = MediaRecorder.isTypeSupported("video/webm;codecs=vp9")
+    ? "video/webm;codecs=vp9"
+    : "video/webm";
+  const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 14_000_000 });
+  const chunks = [];
+  rec.ondataavailable = (e) => chunks.push(e.data);
+
+  await waitWrap(tile);
+  rec.start();
+  btn.textContent = "● grabando";
+  await waitWrap(tile);
+  rec.stop();
+  await new Promise((r) => (rec.onstop = r));
+
+  const blob = new Blob(chunks, { type: "video/webm" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `header-${tile.id}-seed${tile.seed}.webm`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+
+  btn.textContent = "export ⬇";
+  btn.classList.remove("rec");
+  btn.disabled = false;
+}
+</script>
+</body>
+</html>
