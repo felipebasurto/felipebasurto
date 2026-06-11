@@ -1,82 +1,61 @@
-<div align="center">
+`~/cv.md` · [felipebasurto.com](https://felipebasurto.com)
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=28&duration=3000&pause=1000&color=6366F1&center=true&vCenter=true&width=600&lines=Felipe+Basurto;Solutions+Architect+%7C+AI+%26+LLMs;Cursor+Community+Lead+%C2%B7+Europe;Building+things+that+ship" alt="Typing intro" />
+# Felipe Basurto
 
-<br/>
+<img src="https://felipebasurto.com/assets/profile.png" width="112" alt="Profile photo" />
 
-**Madrid, Spain** · [felipebasurto.com](https://felipebasurto.com) · AI enthusiast
+**Solutions Architect** at [**Multiverse Computing**](https://multiversecomputing.com/) (Madrid). Most of my week is technical pre-sales on **CompactifAI**: LLM compression demos and PoCs for finance, manufacturing, retail, and healthcare. A lot of the work is helping teams run useful models without burning absurd amounts of compute.
 
-[![Portfolio](https://img.shields.io/badge/Portfolio-felipebasurto.com-6366F1?style=for-the-badge&logo=safari&logoColor=white)](https://felipebasurto.com)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/felipe-basurto-barrio/)
-[![X](https://img.shields.io/badge/@fildotai-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/fildotai)
+[**Cursor**](https://cursor.com) **Community Regional Lead for Europe**. What started as meetups in Madrid turned into hackathons, workshops, and founder circles. On the side I ship small **iOS and Mac** apps and play in a band.
 
-</div>
+## Experience
 
----
+### Nov 2025 - present
 
-### About
+<img src="https://felipebasurto.com/assets/companies/multiverse.png" width="20" height="20" alt="" /> **Solutions Architect** at [**Multiverse Computing**](https://multiversecomputing.com/) (Madrid). Demos and PoCs across finance, manufacturing, retail, and healthcare. Most meetings are translating between engineers, infra teams, and executives until everyone is talking about the same problem. I work with cloud and on-prem partners on reference architectures. Built a **Claude skills plugin** for sales & presales: call prep, consortium work-package fit, and Multiverse-branded decks, one-pagers, and docs. [Details](https://felipebasurto.com/experience/multiverse/)
 
-Solutions Architect at **Multiverse Computing**, working on **CompactifAI** — LLM compression, quantization, and technical pre-sales demos for enterprise customers.
+Side projects:
 
-Also **Cursor Community Regional Lead for Europe** — meetups, hackathons, and workshops across the continent.
+- <img src="https://felipebasurto.com/assets/companies/cursor.png" width="20" height="20" alt="" /> [**Cursor**](https://cursor.com) **Community Regional Lead for Europe** (Madrid since May 2025, now Europe-wide). Meetups, hackathons, workshops, founder circles: coworkings, startups, universities. [Details](https://felipebasurto.com/experience/cursor/)
+- <img src="https://felipebasurto.com/assets/companies/encore.png" width="20" height="20" alt="" /> Side project: [**Encore: Concert Diary**](https://encorearchives.com) (since May 2025). **iOS** in **Swift** / **SwiftUI**: concert feed, stats, friends, passport, upcoming, **wrapped**. Built in spare time with Cursor in the loop. On the App Store; **$2k+** revenue; TikTok/Reels for installs. [App Store (US)](https://apps.apple.com/us/app/encore-concert-diary/id6748657647) · [Site (ES)](https://encorearchives.com/es) · [Details](https://felipebasurto.com/experience/encore/)
 
-Previously Data Scientist at AILY LABS (LangChain, Graph RAG, MLOps on AWS). Master's in Business Analytics & Big Data from IE.
+### Jul 2023 - Nov 2025
 
-When I'm not shipping AI, I'm building **iOS/macOS apps**, making music with my band **Triple Check**, or tinkering with side projects I forget to add to my portfolio.
+<img src="https://felipebasurto.com/assets/companies/aily.png" width="20" height="20" alt="" /> **Data Scientist** at [**AILY LABS**](https://www.ailylabs.com/) (Madrid). Shipped **LangChain** agents to production with **Langfuse** for tracing: retrieval, tools, guardrails. Built **Graph RAG** over factory manuals (OCR, **unstructured.io** → **Neo4j** → **LangChain**); production API returns **cited page and section** for shop-floor faults. NLP and time-series work in SQL/Python. **MLOps on AWS** ([**Apache Airflow**](https://airflow.apache.org/), [**Docker**](https://www.docker.com/), CI/CD, monitoring); cut an internal ETL from ~1.5h to ~15s. [Details](https://felipebasurto.com/experience/aily/)
 
----
+### 2022 - 2023
 
-### What I'm up to
+<img src="https://felipebasurto.com/assets/companies/ie.png" width="20" height="20" alt="" /> **Master's in Business Analytics and Big Data** at [**IE School of Science and Technology**](https://www.ie.edu/school-science-technology). 1st place at the IE × [**NTT DATA**](https://www.nttdata.com/) & [**o9**](https://o9solutions.com/) Sustainability Datathon and at the IE Impact Project (a news recommender built with [**Microsoft**](https://www.microsoft.com/)). Internship at [**FITIZENS**](https://fitizens.io/) on the side: Human Pose Estimation with [**OpenCV**](https://opencv.org/) and [**MediaPipe**](https://ai.google.dev/edge/mediapipe/solutions/guide); demos in [**Streamlit**](https://streamlit.io/). [Details](https://felipebasurto.com/experience/ie/)
 
-```text
-🏢  Multiverse Computing  →  CompactifAI demos, PoCs & enterprise AI
-🌍  Cursor Community      →  Regional Lead for Europe
-📱  Side projects         →  Encore, HabitDex, Audio Silence Remover
-🎸  Triple Check          →  Spanish pop-rock, Burgos
-```
+### 2021 - 2022
 
----
+<img src="https://felipebasurto.com/assets/companies/accenture.png" width="20" height="20" alt="" /> **Salesforce developer** at [**Accenture**](https://www.accenture.com/es-es) (Spain, energy sector). Java, SQL, HTML, JavaScript, CSS.
 
-### Featured projects
+### 2017 - 2022
 
-| Project | Description |
-| :--- | :--- |
-| [**silence-remover**](https://github.com/felipebasurto/silence-remover) | macOS app to strip silence from audio — open source, Swift |
-| [**viralslide**](https://github.com/felipebasurto/viralslide) | TikTok slide generator — TypeScript, built with Lovable + Cursor |
-| [**plugin-factory**](https://github.com/felipebasurto/plugin-factory) | Scaffold Cursor plugins from the CLI |
-| [**hardhat-object-detection-yolov8**](https://github.com/felipebasurto/hardhat-object-detection-yolov8) | YOLOv8 safety helmet detection |
+<img src="https://felipebasurto.com/assets/companies/ubu.png" width="20" height="20" alt="" /> **Computer Science Engineering** at [**Universidad de Burgos**](https://www.ubu.es/). [**Erasmus+**](https://erasmus-plus.ec.europa.eu/) at [**Wrocław University of Science and Technology**](https://pwr.edu.pl/en/) (2019–2020) and [**SICUE**](https://www.crue.org/sicue/) at [**Universidad Autónoma de Madrid**](https://www.uam.es/) (2021–2022). [Details](https://felipebasurto.com/experience/ubu/)
 
-More on my [projects page](https://felipebasurto.com/projects/).
+## Projects
 
----
+### Music (Triple Check)
 
-### Stack
+- <img src="https://felipebasurto.com/assets/companies/triple-check.png" width="20" height="20" alt="" /> **[Triple Check](https://open.spotify.com/artist/2uGutUfLOfafsa8NLUjdzR)**: **Spanish pop rock** in **Burgos** with **Miguel Ferrer** and **Diego Garrido**; we met at school, home recordings from **2020**. **1.7M+** all-time streams on Spotify. EP *Atentamente, Triple Check* (2023). Played bars and small venues across Spain. [Spotify](https://open.spotify.com/artist/2uGutUfLOfafsa8NLUjdzR) · [Details](https://felipebasurto.com/triplecheck/)
 
-<p>
-  <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python"/>
-  <img src="https://img.shields.io/badge/Swift-FA7343?style=flat-square&logo=swift&logoColor=white" alt="Swift"/>
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript"/>
-  <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white" alt="PyTorch"/>
-  <img src="https://img.shields.io/badge/AWS-232F3E?style=flat-square&logo=amazon-aws&logoColor=white" alt="AWS"/>
-  <img src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker"/>
-  <img src="https://img.shields.io/badge/LangChain-1C3C3C?style=flat-square&logo=langchain&logoColor=white" alt="LangChain"/>
-  <img src="https://img.shields.io/badge/Neo4j-008CC1?style=flat-square&logo=neo4j&logoColor=white" alt="Neo4j"/>
-  <img src="https://img.shields.io/badge/SwiftUI-000000?style=flat-square&logo=swift&logoColor=white" alt="SwiftUI"/>
-  <img src="https://img.shields.io/badge/Cursor-000000?style=flat-square&logo=cursor&logoColor=white" alt="Cursor"/>
-</p>
+### Apps (side projects)
+
+- <img src="https://felipebasurto.com/assets/companies/encore.png" width="20" height="20" alt="" /> **[Encore: Concert Diary](https://encorearchives.com)**: see entry above. [Details](https://felipebasurto.com/experience/encore/)
+- <img src="https://felipebasurto.com/assets/companies/habitdex.png" width="20" height="20" alt="" /> **[HabitDex](https://apps.apple.com/us/app/habitdex/id6755887620)**: **Miguel Ferrer** ([LinkedIn](https://www.linkedin.com/in/mffdr/?locale=en)) on design. Pokémon-style habit loop; on-device + optional iCloud. [App Store](https://apps.apple.com/us/app/habitdex/id6755887620) · [Details](https://felipebasurto.com/experience/habitdex/)
+- <img src="https://felipebasurto.com/assets/companies/audio-silence-remover.png" width="20" height="20" alt="" /> **[Audio Silence Remover](https://apps.apple.com/us/app/audio-silence-remover/id6763403196?mt=12)**: macOS utility I use for **TikTok/YouTube** voiceovers: threshold-based silence trim, no ML; **open source** on GitHub. [App Store](https://apps.apple.com/us/app/audio-silence-remover/id6763403196?mt=12) · [GitHub](https://github.com/felipebasurto/silence-remover) · [Details](https://felipebasurto.com/experience/audio-silence-remover/)
+
+**GitHub** and coursework: **[Projects →](https://felipebasurto.com/projects/)**.
+
+## Links
+
+- [GitHub](https://github.com/felipebasurto)
+- [LinkedIn](https://www.linkedin.com/in/felipe-basurto-barrio/)
+- [Twitter / X @fildotai](https://x.com/fildotai)
+- [Email](mailto:felipeasurtobarrio@gmail.com)
 
 ---
 
-<div align="center">
-
-<img src="https://github-readme-stats.vercel.app/api?username=felipebasurto&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" alt="GitHub stats" height="165"/>
-&nbsp;
-<img src="https://github-readme-streak-stats.herokuapp.com/?user=felipebasurto&theme=tokyonight&hide_border=true" alt="GitHub streak" height="165"/>
-
-<br/><br/>
-
-**Let's connect** — always happy to talk AI, Cursor, Swift, or live music.
-
-<img src="https://komarev.com/ghpvc/?username=felipebasurto&color=6366F1&style=flat-square&label=profile+views" alt="Profile views"/>
-
-</div>
+EOF · 2026 · [built from markdown](https://felipebasurto.com)
