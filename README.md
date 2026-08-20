@@ -25,7 +25,6 @@ stack:     Swift · TypeScript · Python
 
 | | |
 | :--- | :--- |
-| [**silence-remover**](https://github.com/felipebasurto/silence-remover) | macOS · App Store · open source |
 | [**viajante**](https://github.com/felipebasurto/viajante) | Local flight/hotel search, no API keys |
 | [**plugin-factory**](https://github.com/felipebasurto/plugin-factory) | Client plugins for Claude, Cursor, Codex |
 
