@@ -29,7 +29,7 @@ stack:     Swift · TypeScript · Python
 | [**viajante**](https://github.com/felipebasurto/viajante) | Local flight/hotel search, no API keys |
 | [**plugin-factory**](https://github.com/felipebasurto/plugin-factory) | Client plugins for Claude, Cursor, Codex |
 
-Also [**musatro**](https://musatro.felipebasurto.com/) — generative music experiments.
+Also [**musatro**](https://musatro.felipebasurto.com/) — Mus-inspired roguelike deckbuilder.
 
 ## Music
 
