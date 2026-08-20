@@ -4,34 +4,40 @@
 
 # Felipe Basurto
 
-Work stuff → **[felipebasurto.com](https://felipebasurto.com)**. This is everything else.
+iOS & macOS developer. Portfolio → **[felipebasurto.com](https://felipebasurto.com)**
 
 ```yaml
 apps:      Encore · HabitDex · Audio Silence Remover
 music:     Triple Check
-community: Cursor meetups & hackathons (Europe)
-stack:     Swift · TypeScript · Python · whatever ships
+community: Cursor events (Europe)
+stack:     Swift · TypeScript · Python
 ```
 
 ## Shipping
 
 | | |
 | :--- | :--- |
-| [**Encore**](https://encorearchives.com) | Concert diary for iOS — built in spare time with Cursor |
+| [**Encore**](https://encorearchives.com) | Concert diary for iOS |
 | [**HabitDex**](https://apps.apple.com/us/app/habitdex/id6755887620) | Habit tracker, Pokémon vibes |
-| [**Audio Silence Remover**](https://github.com/felipebasurto/silence-remover) | macOS utility for voiceovers — open source |
+| [**Audio Silence Remover**](https://github.com/felipebasurto/silence-remover) | macOS utility for voiceovers — App Store, open source |
 
 ## Open source
 
-Mostly tools I wanted for myself: [`silence-remover`](https://github.com/felipebasurto/silence-remover), [`plugin-factory`](https://github.com/felipebasurto/plugin-factory), random experiments. The rest is half-finished ideas and coursework fossils.
+| | |
+| :--- | :--- |
+| [**silence-remover**](https://github.com/felipebasurto/silence-remover) | macOS · App Store · open source |
+| [**viajante**](https://github.com/felipebasurto/viajante) | Local flight/hotel search, no API keys |
+| [**plugin-factory**](https://github.com/felipebasurto/plugin-factory) | Client plugins for Claude, Cursor, Codex |
+
+Also [**musatro**](https://musatro.felipebasurto.com/) — generative music experiments.
 
 ## Music
 
-[**Triple Check**](https://open.spotify.com/artist/2uGutUfLOfafsa8NLUjdzR) — pop-rock from Burgos. Home recordings since 2020, still going.
+[**Triple Check**](https://open.spotify.com/artist/2uGutUfLOfafsa8NLUjdzR) — pop-rock from Burgos. Home recordings since 2020.
 
 ## Community
 
-I run [**Cursor**](https://cursor.com) events across Europe — meetups, hackathons, workshops. Not my day job, just fun.
+I run [**Cursor**](https://cursor.com) events across Europe — meetups, hackathons, workshops.
 
 ---
 
