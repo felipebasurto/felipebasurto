@@ -1,5 +1,3 @@
-<img src="assets/header.gif" width="100%" alt="" />
-
 `~/github.md` · Madrid
 
 # Felipe Basurto
@@ -17,11 +15,7 @@ ai guy. I build agents, LLM systems, and useful developer tools. Portfolio → *
 
 ## Community
 
-I run [**Cursor**](https://cursor.com) events across Europe — meetups, hackathons, workshops.
-
-## Music
-
-[**Triple Check**](https://open.spotify.com/artist/2uGutUfLOfafsa8NLUjdzR) — pop-rock from Burgos. Home recordings since 2020.
+I run [**SpaceXAI**](https://spacexai.com) events across Europe — meetups, hackathons, workshops.
 
 ---
 
