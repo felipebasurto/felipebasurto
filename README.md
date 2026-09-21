@@ -15,7 +15,7 @@ ai guy. I build agents, LLM systems, and useful developer tools. Portfolio → *
 
 ## Community
 
-I run [**SpaceXAI**](https://spacexai.com) events across Europe — meetups, hackathons, workshops.
+I run [**SpaceXAI**](https://x.ai/) events across Europe — meetups, hackathons, workshops.
 
 ---
 
