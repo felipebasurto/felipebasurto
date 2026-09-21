@@ -4,39 +4,24 @@
 
 # Felipe Basurto
 
-iOS & macOS developer. Portfolio → **[felipebasurto.com](https://felipebasurto.com)**
+ai guy. I build agents, LLM systems, and useful developer tools. Portfolio → **[felipebasurto.com](https://felipebasurto.com)**
 
-```yaml
-apps:      Encore · HabitDex · Audio Silence Remover
-music:     Triple Check
-community: Cursor events (Europe)
-stack:     Swift · TypeScript · Python
-```
-
-## Shipping
+## Projects
 
 | | |
 | :--- | :--- |
-| [**Encore**](https://encorearchives.com) | Concert diary for iOS |
-| [**HabitDex**](https://apps.apple.com/us/app/habitdex/id6755887620) | Habit tracker, Pokémon vibes |
-| [**Audio Silence Remover**](https://github.com/felipebasurto/silence-remover) | macOS utility for voiceovers — App Store, open source |
-
-## Open source
-
-| | |
-| :--- | :--- |
-| [**viajante**](https://github.com/felipebasurto/viajante) | Local flight/hotel search, no API keys |
-| [**plugin-factory**](https://github.com/felipebasurto/plugin-factory) | Client plugins for Claude, Cursor, Codex |
-
-Also [**musatro**](https://musatro.felipebasurto.com/) — Mus-inspired roguelike deckbuilder.
-
-## Music
-
-[**Triple Check**](https://open.spotify.com/artist/2uGutUfLOfafsa8NLUjdzR) — pop-rock from Burgos. Home recordings since 2020.
+| [**viajante**](https://github.com/felipebasurto/viajante) | Flight and hotel search for the terminal, Python, and AI assistants — no API keys |
+| [**FreshCtx**](https://github.com/felipebasurto/freshctx) | Research prototype for keeping a coding agent's observed code current |
+| [**plugin-factory**](https://github.com/felipebasurto/plugin-factory) | Turn client context into installable plugins for Claude, Cursor, and Codex |
+| [**musatro**](https://musatro.felipebasurto.com/) | Mus-inspired roguelike deckbuilder |
 
 ## Community
 
 I run [**Cursor**](https://cursor.com) events across Europe — meetups, hackathons, workshops.
+
+## Music
+
+[**Triple Check**](https://open.spotify.com/artist/2uGutUfLOfafsa8NLUjdzR) — pop-rock from Burgos. Home recordings since 2020.
 
 ---
 
